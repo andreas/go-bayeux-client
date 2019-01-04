@@ -109,6 +109,21 @@ func (c *Client) Close() error {
 	return c.disconnect()
 }
 
+func (c *Client) Unsubscribe(pattern string) error {
+	rsp, err := c.send(&request{
+		Channel:      "/meta/unsubscribe",
+		ClientId:     c.clientId,
+		Subscription: pattern,
+	})
+	if err != nil {
+		return err
+	}
+	if !rsp.Successful {
+		return errors.New(rsp.Error)
+	}
+	return nil
+}
+
 // Subscribe is like `SubscribeExt` with a blank `ext` part.
 func (c *Client) Subscribe(pattern string, out chan<- *Message) error {
 	return c.SubscribeExt(pattern, out, nil)
