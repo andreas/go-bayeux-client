@@ -278,6 +278,7 @@ func (c *Client) send(req *request) (*metaMessage, error) {
 	// 3. Handle messages to just-created subscriptions
 
 	for _, msg := range messages {
+		msg := msg
 		if req.Channel == msg.Channel {
 			reply = &msg
 		} else {
